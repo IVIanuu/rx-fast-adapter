@@ -14,68 +14,66 @@
  * limitations under the License.
  */
 
-package com.ivianuu.rxfastadapter.toucheventhook;
+package com.ivianuu.rxfastadapter.longclick;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.ivianuu.rxfastadapter.eventhookcallback.EventHookCallback;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
-import com.mikepenz.fastadapter.listeners.TouchEventHook;
+import com.mikepenz.fastadapter.listeners.LongClickEventHook;
 
 import java.util.List;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
- * Touch flowable
+ * Fast adpater click event hook observable
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public class TouchEventHookFlowable<T extends IItem> implements FlowableOnSubscribe<TouchEventHookEvent<T>> {
+public class LongClickEventHookObservable<T extends IItem>
+        implements ObservableOnSubscribe<LongClickEvent<T>> {
 
     private final FastAdapter<T> adapter;
+    private final Predicate<LongClickEvent<T>> predicate;
     private final EventHookCallback callback;
-    private final Predicate<TouchEventHookEvent<T>> predicate;
 
-    private TouchEventHookFlowable(FastAdapter<T> adapter,
-                                     EventHookCallback callback,
-                                     Predicate<TouchEventHookEvent<T>> predicate) {
+    private LongClickEventHookObservable(FastAdapter<T> adapter,
+                                         EventHookCallback callback,
+                                         Predicate<LongClickEvent<T>> predicate) {
         this.adapter = adapter;
         this.callback = callback;
         this.predicate = predicate;
     }
 
     /**
-     * Emits on touches
+     * Emits on click events
      */
     @NonNull
-    public static <T extends IItem> Flowable<TouchEventHookEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                                   @NonNull EventHookCallback callback,
-                                                                   @NonNull Predicate<TouchEventHookEvent<T>> predicate,
-                                                                   @NonNull BackpressureStrategy backpressureStrategy) {
-        return Flowable.create(new TouchEventHookFlowable<T>(adapter, callback, predicate), backpressureStrategy);
+    public static <T extends IItem> Observable<LongClickEvent<T>> create(@NonNull FastAdapter<T> adapter,
+                                                                                  @NonNull EventHookCallback callback,
+                                                                                  @NonNull Predicate<LongClickEvent<T>> predicate) {
+        return Observable.create(new LongClickEventHookObservable<T>(adapter, callback, predicate));
     }
 
     @Override
-    public void subscribe(final FlowableEmitter<TouchEventHookEvent<T>> e) throws Exception {
-        adapter.withEventHook(new TouchEventHook<T>() {
+    public void subscribe(final ObservableEmitter<LongClickEvent<T>> e) throws Exception {
+        adapter.withEventHook(new LongClickEventHook<T>() {
             @Override
-            public boolean onTouch(View v, MotionEvent event, int position, FastAdapter<T> fastAdapter, T item) {
-                if (!e.isCancelled()) {
-                    TouchEventHookEvent<T> touchEvent = new TouchEventHookEvent<>(v, event, adapter, item, position);
-                    e.onNext(touchEvent);
+            public boolean onLongClick(View v, int position, FastAdapter<T> fastAdapter, T item) {
+                if (!e.isDisposed()) {
+                    LongClickEvent<T> event = new LongClickEvent<>(v, adapter.getAdapter(position), item, position);
+                    e.onNext(event);
                     try {
-                        return predicate.test(touchEvent);
+                        return predicate.test(event);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -108,7 +106,7 @@ public class TouchEventHookFlowable<T extends IItem> implements FlowableOnSubscr
 
             @Override
             public boolean isDisposed() {
-                return disposed;
+                return true;
             }
         });
     }

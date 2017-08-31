@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.ivianuu.rxfastadapter.longclickeventhook;
+package com.ivianuu.rxfastadapter.touch;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.ivianuu.rxfastadapter.eventhookcallback.EventHookCallback;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
-import com.mikepenz.fastadapter.listeners.LongClickEventHook;
+import com.mikepenz.fastadapter.listeners.TouchEventHook;
 
 import java.util.List;
 
@@ -36,44 +37,43 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
- * Fast adpater click event hook observable
+ * Touch flowable
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public class LongClickEventHookObservable<T extends IItem>
-        implements ObservableOnSubscribe<LongClickEventHookEvent<T>> {
+public class TouchEventHookObservable<T extends IItem> implements ObservableOnSubscribe<TouchEvent<T>> {
 
     private final FastAdapter<T> adapter;
-    private final Predicate<LongClickEventHookEvent<T>> predicate;
     private final EventHookCallback callback;
+    private final Predicate<TouchEvent<T>> predicate;
 
-    private LongClickEventHookObservable(FastAdapter<T> adapter,
-                                         EventHookCallback callback,
-                                         Predicate<LongClickEventHookEvent<T>> predicate) {
+    private TouchEventHookObservable(FastAdapter<T> adapter,
+                                     EventHookCallback callback,
+                                     Predicate<TouchEvent<T>> predicate) {
         this.adapter = adapter;
         this.callback = callback;
         this.predicate = predicate;
     }
 
     /**
-     * Emits on click events
+     * Emits on touches
      */
     @NonNull
-    public static <T extends IItem> Observable<LongClickEventHookEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                                                  @NonNull EventHookCallback callback,
-                                                                                  @NonNull Predicate<LongClickEventHookEvent<T>> predicate) {
-        return Observable.create(new LongClickEventHookObservable<T>(adapter, callback, predicate));
+    public static <T extends IItem> Observable<TouchEvent<T>> create(@NonNull FastAdapter<T> adapter,
+                                                                   @NonNull EventHookCallback callback,
+                                                                   @NonNull Predicate<TouchEvent<T>> predicate) {
+        return Observable.create(new TouchEventHookObservable<T>(adapter, callback, predicate));
     }
 
     @Override
-    public void subscribe(final ObservableEmitter<LongClickEventHookEvent<T>> e) throws Exception {
-        adapter.withEventHook(new LongClickEventHook<T>() {
+    public void subscribe(final ObservableEmitter<TouchEvent<T>> e) throws Exception {
+        adapter.withEventHook(new TouchEventHook<T>() {
             @Override
-            public boolean onLongClick(View v, int position, FastAdapter<T> fastAdapter, T item) {
+            public boolean onTouch(View v, MotionEvent event, int position, FastAdapter<T> fastAdapter, T item) {
                 if (!e.isDisposed()) {
-                    LongClickEventHookEvent<T> event = new LongClickEventHookEvent<>(v, adapter, item, position);
-                    e.onNext(event);
+                    TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter.getAdapter(position), item, position);
+                    e.onNext(touchEvent);
                     try {
-                        return predicate.test(event);
+                        return predicate.test(touchEvent);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -106,7 +106,7 @@ public class LongClickEventHookObservable<T extends IItem>
 
             @Override
             public boolean isDisposed() {
-                return true;
+                return disposed;
             }
         });
     }

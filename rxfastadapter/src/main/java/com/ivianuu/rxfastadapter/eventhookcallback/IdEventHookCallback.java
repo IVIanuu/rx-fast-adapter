@@ -18,6 +18,7 @@ package com.ivianuu.rxfastadapter.eventhookcallback;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -28,6 +29,7 @@ import java.util.List;
 /**
  * Call back which searches the views by id
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class IdEventHookCallback implements EventHookCallback {
 
     private final List<Integer> ids;

@@ -17,6 +17,7 @@
 package com.ivianuu.rxfastadapter.longclick;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.mikepenz.fastadapter.IAdapter;
@@ -33,7 +34,7 @@ public class LongClickEvent<T extends IItem> {
     private final int position;
 
     LongClickEvent(@NonNull View view,
-                   @NonNull IAdapter<T> adapter,
+                   @Nullable IAdapter<T> adapter,
                    @NonNull T item,
                    int position) {
         this.view = view;
@@ -53,7 +54,7 @@ public class LongClickEvent<T extends IItem> {
     /**
      * Returns the adapter
      */
-    @NonNull
+    @Nullable
     public IAdapter<T> adapter() {
         return adapter;
     }

@@ -19,25 +19,22 @@ package com.ivianuu.rxfastadapter;
 import android.support.annotation.NonNull;
 
 import com.ivianuu.rxfastadapter.click.ClickEvent;
+import com.ivianuu.rxfastadapter.click.ClickEventHookObservable;
 import com.ivianuu.rxfastadapter.click.ClickObservable;
-import com.ivianuu.rxfastadapter.clickeventhook.ClickEventHookEvent;
-import com.ivianuu.rxfastadapter.clickeventhook.ClickEventHookObservable;
-import com.ivianuu.rxfastadapter.eventhookcallback.EventHookCallback;
+import com.ivianuu.rxfastadapter.eventhookcallback.IdEventHookCallback;
 import com.ivianuu.rxfastadapter.longclick.LongClickEvent;
+import com.ivianuu.rxfastadapter.longclick.LongClickEventHookObservable;
 import com.ivianuu.rxfastadapter.longclick.LongClickObservable;
-import com.ivianuu.rxfastadapter.longclickeventhook.LongClickEventHookEvent;
-import com.ivianuu.rxfastadapter.longclickeventhook.LongClickEventHookObservable;
 import com.ivianuu.rxfastadapter.selection.SelectionEvent;
 import com.ivianuu.rxfastadapter.selection.SelectionObservable;
 import com.ivianuu.rxfastadapter.touch.TouchEvent;
-import com.ivianuu.rxfastadapter.touch.TouchFlowable;
-import com.ivianuu.rxfastadapter.toucheventhook.TouchEventHookEvent;
-import com.ivianuu.rxfastadapter.toucheventhook.TouchEventHookFlowable;
+import com.ivianuu.rxfastadapter.touch.TouchEventHookObservable;
+import com.ivianuu.rxfastadapter.touch.TouchObservable;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Predicate;
 
@@ -65,6 +62,26 @@ public class RxFastAdapter {
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Predicate<ClickEvent<T>> predicate) {
         return ClickObservable.create(adapter, predicate, false);
+    }
+
+    /**
+     * Emits on clicks
+     * This will use event hooks internally
+     */
+    @NonNull
+    public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
+                                                                     @NonNull Integer... ids) {
+        return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
+    }
+
+    /**
+     * Emits on clicks
+     * This will use event hooks internally
+     */
+    @NonNull
+    public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
+                                                                     @NonNull List<Integer> ids) {
+        return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
     }
 
     /**
@@ -102,6 +119,46 @@ public class RxFastAdapter {
     }
 
     /**
+     * Emits on long clicks
+     * This will use event hooks internally
+     */
+    @NonNull
+    public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
+                                                                             @NonNull Integer... ids) {
+        return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
+    }
+
+    /**
+     * Emits on long clicks
+     * This will use event hooks internally
+     */
+    @NonNull
+    public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
+                                                                             @NonNull List<Integer> ids) {
+        return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
+    }
+
+    /**
+     * Emits on long clicks
+     */
+    @NonNull
+    public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
+                                                                             @NonNull Predicate<LongClickEvent<T>> predicate,
+                                                                             @NonNull Integer... ids) {
+        return LongClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
+    }
+
+    /**
+     * Emits on long clicks
+     */
+    @NonNull
+    public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
+                                                                             @NonNull Predicate<LongClickEvent<T>> predicate,
+                                                                             @NonNull List<Integer> ids) {
+        return LongClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
+    }
+
+    /**
      * Emits on pre long clicks
      */
     @NonNull
@@ -122,7 +179,7 @@ public class RxFastAdapter {
      * Emits on touches
      */
     @NonNull
-    public static <T extends IItem> Flowable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
         return touches(adapter, Functions.<TouchEvent<T>>always(true));
     }
 
@@ -130,19 +187,47 @@ public class RxFastAdapter {
      * Emits on touches
      */
     @NonNull
-    public static <T extends IItem> Flowable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
-                                                                      @NonNull Predicate<TouchEvent<T>> predicate) {
-        return touches(adapter, predicate, BackpressureStrategy.BUFFER);
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
+                                                                      @NonNull Integer... ids) {
+        return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
     }
 
     /**
      * Emits on touches
      */
     @NonNull
-    public static <T extends IItem> Flowable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
-                                                                    @NonNull Predicate<TouchEvent<T>> predicate,
-                                                                    @NonNull BackpressureStrategy backpressureStrategy) {
-        return TouchFlowable.create(adapter, predicate, backpressureStrategy);
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
+                                                                      @NonNull List<Integer> ids) {
+        return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
+    }
+
+    /**
+     * Emits on touches
+     */
+    @NonNull
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
+                                                                      @NonNull Predicate<TouchEvent<T>> predicate) {
+        return TouchObservable.create(adapter, predicate);
+    }
+
+    /**
+     * Emits on touches
+     */
+    @NonNull
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
+                                                                      @NonNull Predicate<TouchEvent<T>> predicate,
+                                                                      @NonNull Integer... ids) {
+        return TouchEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
+    }
+
+    /**
+     * Emits on touches
+     */
+    @NonNull
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
+                                                                      @NonNull Predicate<TouchEvent<T>> predicate,
+                                                                      @NonNull List<Integer> ids) {
+        return TouchEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
     }
 
     /**
@@ -153,61 +238,4 @@ public class RxFastAdapter {
         return SelectionObservable.create(adapter);
     }
 
-    /**
-     * Emits on click events
-     */
-    @NonNull
-    public static <T extends IItem> Observable<ClickEventHookEvent<T>> clickEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                       @NonNull EventHookCallback callback) {
-        return ClickEventHookObservable.create(adapter, callback);
-    }
-
-    /**
-     * Emits on long click events
-     */
-    @NonNull
-    public static <T extends IItem> Observable<LongClickEventHookEvent<T>> longClickEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                               @NonNull EventHookCallback callback) {
-        return longClickEventHooks(adapter, callback, Functions.<LongClickEventHookEvent<T>>always(true));
-    }
-
-    /**
-     * Emits on long click events
-     */
-    @NonNull
-    public static <T extends IItem> Observable<LongClickEventHookEvent<T>> longClickEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                               @NonNull EventHookCallback callback,
-                                                                                               @NonNull Predicate<LongClickEventHookEvent<T>> predicate) {
-        return LongClickEventHookObservable.create(adapter, callback, predicate);
-    }
-
-    /**
-     * Emits on touches
-     */
-    @NonNull
-    public static <T extends IItem> Flowable<TouchEventHookEvent<T>> touchEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                     @NonNull EventHookCallback callback) {
-        return touchEventHooks(adapter, callback, Functions.<TouchEventHookEvent<T>>always(true));
-    }
-
-    /**
-     * Emits on touches
-     */
-    @NonNull
-    public static <T extends IItem> Flowable<TouchEventHookEvent<T>> touchEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                     @NonNull EventHookCallback callback,
-                                                                                     @NonNull Predicate<TouchEventHookEvent<T>> predicate) {
-        return touchEventHooks(adapter, callback, predicate, BackpressureStrategy.BUFFER);
-    }
-
-    /**
-     * Emits on touches
-     */
-    @NonNull
-    public static <T extends IItem> Flowable<TouchEventHookEvent<T>> touchEventHooks(@NonNull FastAdapter<T> adapter,
-                                                                                     @NonNull EventHookCallback callback,
-                                                                                     @NonNull Predicate<TouchEventHookEvent<T>> predicate,
-                                                                                     @NonNull BackpressureStrategy backpressureStrategy) {
-        return TouchEventHookFlowable.create(adapter, callback, predicate, backpressureStrategy);
-    }
 }

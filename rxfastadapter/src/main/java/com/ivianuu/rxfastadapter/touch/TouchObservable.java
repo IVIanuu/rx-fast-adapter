@@ -25,10 +25,9 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItem;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
@@ -36,29 +35,28 @@ import io.reactivex.functions.Predicate;
  * Touch flowable
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public class TouchFlowable<T extends IItem> implements FlowableOnSubscribe<TouchEvent<T>> {
+public class TouchObservable<T extends IItem> implements ObservableOnSubscribe<TouchEvent<T>> {
 
     private final FastAdapter<T> adapter;
     private final Predicate<TouchEvent<T>> predicate;
 
-    private TouchFlowable(FastAdapter<T> adapter,
-                          Predicate<TouchEvent<T>> predicate) {
+    private TouchObservable(FastAdapter<T> adapter,
+                            Predicate<TouchEvent<T>> predicate) {
         this.adapter = adapter;
         this.predicate = predicate;
     }
 
-    public static <T extends IItem> Flowable<TouchEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                            @NonNull Predicate<TouchEvent<T>> predicate,
-                                                            @NonNull BackpressureStrategy backpressureStrategy) {
-        return Flowable.create(new TouchFlowable<T>(adapter, predicate), backpressureStrategy);
+    public static <T extends IItem> Observable<TouchEvent<T>> create(@NonNull FastAdapter<T> adapter,
+                                                                     @NonNull Predicate<TouchEvent<T>> predicate) {
+        return Observable.create(new TouchObservable<T>(adapter, predicate));
     }
 
     @Override
-    public void subscribe(final FlowableEmitter<TouchEvent<T>> e) throws Exception {
+    public void subscribe(final ObservableEmitter<TouchEvent<T>> e) throws Exception {
         adapter.withOnTouchListener(new FastAdapter.OnTouchListener<T>() {
             @Override
             public boolean onTouch(View v, MotionEvent event, IAdapter<T> adapter, T item, int position) {
-                if (!e.isCancelled()) {
+                if (!e.isDisposed()) {
                     TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter, item, position);
                     e.onNext(touchEvent);
                     try {

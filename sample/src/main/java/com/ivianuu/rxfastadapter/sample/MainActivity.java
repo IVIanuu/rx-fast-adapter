@@ -1,17 +1,14 @@
 package com.ivianuu.rxfastadapter.sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.ivianuu.rxfastadapter.click.ClickEvent;
-import com.ivianuu.rxfastadapter.clickeventhook.ClickEventHookEvent;
-import com.ivianuu.rxfastadapter.eventhookcallback.IdEventHookCallback;
-import com.ivianuu.rxfastadapter.longclick.LongClickEvent;
 import com.ivianuu.rxfastadapter.RxFastAdapter;
-import com.ivianuu.rxfastadapter.longclickeventhook.LongClickEventHookEvent;
+import com.ivianuu.rxfastadapter.click.ClickEvent;
+import com.ivianuu.rxfastadapter.longclick.LongClickEvent;
 import com.ivianuu.rxfastadapter.selection.SelectionEvent;
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 
@@ -45,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         Disposable clicks = RxFastAdapter.clicks(adapter)
                 .subscribe(new Consumer<ClickEvent<SampleItem>>() {
                     @Override
-                    public void accept(ClickEvent<SampleItem> sampleItemClickEvent) throws Exception {
+                    public void accept(ClickEvent<SampleItem> event) throws Exception {
                         Toast.makeText(MainActivity.this,
-                                sampleItemClickEvent.position() + " Clicked!", Toast.LENGTH_SHORT).show();
+                                event.position() + " Clicked!", Toast.LENGTH_SHORT).show();
                     }
                 });
         compositeDisposable.add(clicks);
@@ -55,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         Disposable longClicks = RxFastAdapter.longClicks(adapter)
                 .subscribe(new Consumer<LongClickEvent<SampleItem>>() {
                     @Override
-                    public void accept(LongClickEvent<SampleItem> sampleItemLongClickEvent) throws Exception {
+                    public void accept(LongClickEvent<SampleItem> event) throws Exception {
                         Toast.makeText(MainActivity.this,
-                                sampleItemLongClickEvent.position() + " Long clicked!", Toast.LENGTH_SHORT).show();
+                                event.position() + " Long clicked!", Toast.LENGTH_SHORT).show();
                     }
                 });
         compositeDisposable.add(longClicks);
@@ -65,29 +62,29 @@ public class MainActivity extends AppCompatActivity {
         Disposable selections = RxFastAdapter.selections(adapter)
                 .subscribe(new Consumer<SelectionEvent<SampleItem>>() {
                     @Override
-                    public void accept(SelectionEvent<SampleItem> sampleItemSelectionEvent) throws Exception {
-                        Toast.makeText(MainActivity.this, sampleItemSelectionEvent.item().getTitle()
-                                + " " + sampleItemSelectionEvent.selected(), Toast.LENGTH_SHORT).show();
+                    public void accept(SelectionEvent<SampleItem> event) throws Exception {
+                        Toast.makeText(MainActivity.this, event.item().getTitle()
+                                + " " + event.selected(), Toast.LENGTH_SHORT).show();
                     }
                 });
         compositeDisposable.add(selections);
 
         Disposable launcherIconLongClicks
-                = RxFastAdapter.longClickEventHooks(adapter, new SampleItem.LauncherIconEventCallback())
-                .subscribe(new Consumer<LongClickEventHookEvent<SampleItem>>() {
+                = RxFastAdapter.longClicks(adapter, R.id.launcher_icon)
+                .subscribe(new Consumer<LongClickEvent<SampleItem>>() {
                     @Override
-                    public void accept(LongClickEventHookEvent<SampleItem> sampleItemLongClickEventHookEvent) throws Exception {
-                        Toast.makeText(MainActivity.this, sampleItemLongClickEventHookEvent.position() + " Icon Long clicked", Toast.LENGTH_SHORT).show();
+                    public void accept(LongClickEvent<SampleItem> event) throws Exception {
+                        Toast.makeText(MainActivity.this, event.position() + " Icon Long clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
         compositeDisposable.add(launcherIconLongClicks);
 
         Disposable test =
-                RxFastAdapter.clickEventHooks(adapter, IdEventHookCallback.with(R.id.launcher_icon))
-                .subscribe(new Consumer<ClickEventHookEvent<SampleItem>>() {
+                RxFastAdapter.clicks(adapter, R.id.launcher_icon)
+                .subscribe(new Consumer<ClickEvent<SampleItem>>() {
                     @Override
-                    public void accept(ClickEventHookEvent<SampleItem> sampleItemClickEventHookEvent) throws Exception {
-                        Toast.makeText(MainActivity.this, sampleItemClickEventHookEvent.position() + " Icon clicked", Toast.LENGTH_SHORT).show();
+                    public void accept(ClickEvent<SampleItem> event) throws Exception {
+                        Toast.makeText(MainActivity.this, event.position() + " Icon clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
         compositeDisposable.add(test);

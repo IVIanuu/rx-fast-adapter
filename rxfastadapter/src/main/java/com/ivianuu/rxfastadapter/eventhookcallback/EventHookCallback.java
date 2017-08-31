@@ -18,6 +18,7 @@ package com.ivianuu.rxfastadapter.eventhookcallback;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * Used to bind events
  */
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public interface EventHookCallback {
     /**
      * Returns the view of this event hook

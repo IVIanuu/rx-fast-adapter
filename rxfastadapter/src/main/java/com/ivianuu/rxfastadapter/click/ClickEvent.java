@@ -17,6 +17,7 @@
 package com.ivianuu.rxfastadapter.click;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.mikepenz.fastadapter.IAdapter;
@@ -32,10 +33,10 @@ public class ClickEvent<T extends IItem> {
     private final T item;
     private final int position;
 
-    public ClickEvent(@NonNull View view,
-                      @NonNull IAdapter<T> adapter,
-                      @NonNull T item,
-                      int position) {
+    ClickEvent(@NonNull View view,
+               @Nullable IAdapter<T> adapter,
+               @NonNull T item,
+               int position) {
         this.view = view;
         this.adapter = adapter;
         this.item = item;
@@ -53,7 +54,7 @@ public class ClickEvent<T extends IItem> {
     /**
      * Returns the adapter
      */
-    @NonNull
+    @Nullable
     public IAdapter<T> adapter() {
         return adapter;
     }

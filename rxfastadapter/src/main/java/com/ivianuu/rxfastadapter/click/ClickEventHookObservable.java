@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ivianuu.rxfastadapter.clickeventhook;
+package com.ivianuu.rxfastadapter.click;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,11 +35,11 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Fast adpater click event hook observable
+ * Fast adapter click event hook observable
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class ClickEventHookObservable<T extends IItem>
-        implements ObservableOnSubscribe<ClickEventHookEvent<T>> {
+        implements ObservableOnSubscribe<ClickEvent<T>> {
 
     private final FastAdapter<T> adapter;
     private final EventHookCallback callback;
@@ -53,18 +53,18 @@ public class ClickEventHookObservable<T extends IItem>
      * Emits on click events
      */
     @NonNull
-    public static <T extends IItem> Observable<ClickEventHookEvent<T>> create(@NonNull FastAdapter<T> adapter,
+    public static <T extends IItem> Observable<ClickEvent<T>> create(@NonNull FastAdapter<T> adapter,
                                                                               @NonNull EventHookCallback callback) {
         return Observable.create(new ClickEventHookObservable<T>(adapter, callback));
     }
 
     @Override
-    public void subscribe(final ObservableEmitter<ClickEventHookEvent<T>> e) throws Exception {
+    public void subscribe(final ObservableEmitter<ClickEvent<T>> e) throws Exception {
         adapter.withEventHook(new ClickEventHook<T>() {
             @Override
             public void onClick(View v, int position, FastAdapter<T> fastAdapter, T item) {
                 if (!e.isDisposed()) {
-                    ClickEventHookEvent<T> clickEventHookEvent = new ClickEventHookEvent<>(v, adapter, item, position);
+                    ClickEvent<T> clickEventHookEvent = new ClickEvent<>(v, adapter.getAdapter(position), item, position);
                     e.onNext(clickEventHookEvent);
                 }
             }

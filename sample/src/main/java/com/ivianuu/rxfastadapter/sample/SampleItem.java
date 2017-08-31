@@ -2,13 +2,11 @@ package com.ivianuu.rxfastadapter.sample;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.ivianuu.rxfastadapter.eventhookcallback.EventHookCallback;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
 import java.util.List;
@@ -52,24 +50,6 @@ class SampleItem extends AbstractItem<SampleItem, SampleItem.Holder> {
     @Override
     public int getLayoutRes() {
         return R.layout.item_sample;
-    }
-
-    static class LauncherIconEventCallback implements EventHookCallback {
-        @Nullable
-        @Override
-        public View onBind(@NonNull RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof Holder) {
-                return ((Holder) viewHolder).launcherIcon;
-            }
-
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public List<View> onBindMany(@NonNull RecyclerView.ViewHolder viewHolder) {
-            return null;
-        }
     }
 
     static class Holder extends RecyclerView.ViewHolder {
