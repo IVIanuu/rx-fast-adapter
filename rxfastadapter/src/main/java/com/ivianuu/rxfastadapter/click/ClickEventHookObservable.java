@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.click;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -52,9 +53,9 @@ public class ClickEventHookObservable<T extends IItem>
     /**
      * Emits on click events
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                                              @NonNull EventHookCallback callback) {
+                                                                     @NonNull EventHookCallback callback) {
         return Observable.create(new ClickEventHookObservable<T>(adapter, callback));
     }
 

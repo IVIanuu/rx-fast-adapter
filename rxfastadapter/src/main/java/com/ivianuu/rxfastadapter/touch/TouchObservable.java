@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.touch;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.view.MotionEvent;
@@ -46,6 +47,7 @@ public class TouchObservable<T extends IItem> implements ObservableOnSubscribe<T
         this.predicate = predicate;
     }
 
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> create(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Predicate<TouchEvent<T>> predicate) {
         return Observable.create(new TouchObservable<T>(adapter, predicate));

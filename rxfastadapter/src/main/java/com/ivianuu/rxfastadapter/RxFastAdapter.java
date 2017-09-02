@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
 import com.ivianuu.rxfastadapter.click.ClickEvent;
@@ -50,7 +51,7 @@ public class RxFastAdapter {
     /**
      * Emits on clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter) {
         return clicks(adapter, Functions.<ClickEvent<T>>always(true));
     }
@@ -58,7 +59,7 @@ public class RxFastAdapter {
     /**
      * Emits on clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Predicate<ClickEvent<T>> predicate) {
         return ClickObservable.create(adapter, predicate, false);
@@ -68,7 +69,7 @@ public class RxFastAdapter {
      * Emits on clicks
      * This will use event hooks internally
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Integer... ids) {
         return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
@@ -78,7 +79,7 @@ public class RxFastAdapter {
      * Emits on clicks
      * This will use event hooks internally
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull List<Integer> ids) {
         return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
@@ -87,7 +88,7 @@ public class RxFastAdapter {
     /**
      * Emits on pre clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> preClicks(@NonNull FastAdapter<T> adapter) {
         return preClicks(adapter, Functions.<ClickEvent<T>>always(true));
     }
@@ -95,16 +96,16 @@ public class RxFastAdapter {
     /**
      * Emits on pre clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> preClicks(@NonNull FastAdapter<T> adapter,
-                                                                     @NonNull Predicate<ClickEvent<T>> predicate) {
+                                                                        @NonNull Predicate<ClickEvent<T>> predicate) {
         return ClickObservable.create(adapter, predicate, true);
     }
 
     /**
      * Emits on long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter) {
         return longClicks(adapter, Functions.<LongClickEvent<T>>always(true));
     }
@@ -112,9 +113,9 @@ public class RxFastAdapter {
     /**
      * Emits on long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
-                                                                     @NonNull Predicate<LongClickEvent<T>> predicate) {
+                                                                             @NonNull Predicate<LongClickEvent<T>> predicate) {
         return LongClickObservable.create(adapter, predicate, false);
     }
 
@@ -122,7 +123,7 @@ public class RxFastAdapter {
      * Emits on long clicks
      * This will use event hooks internally
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Integer... ids) {
         return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
@@ -132,7 +133,7 @@ public class RxFastAdapter {
      * Emits on long clicks
      * This will use event hooks internally
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull List<Integer> ids) {
         return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
@@ -141,7 +142,7 @@ public class RxFastAdapter {
     /**
      * Emits on long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Predicate<LongClickEvent<T>> predicate,
                                                                              @NonNull Integer... ids) {
@@ -151,7 +152,7 @@ public class RxFastAdapter {
     /**
      * Emits on long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Predicate<LongClickEvent<T>> predicate,
                                                                              @NonNull List<Integer> ids) {
@@ -161,7 +162,7 @@ public class RxFastAdapter {
     /**
      * Emits on pre long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> preLongClicks(@NonNull FastAdapter<T> adapter) {
         return preLongClicks(adapter, Functions.<LongClickEvent<T>>always(true));
     }
@@ -169,7 +170,7 @@ public class RxFastAdapter {
     /**
      * Emits on pre long clicks
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> preLongClicks(@NonNull FastAdapter<T> adapter,
                                                                                 @NonNull Predicate<LongClickEvent<T>> predicate) {
         return LongClickObservable.create(adapter, predicate, true);
@@ -178,7 +179,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
         return touches(adapter, Functions.<TouchEvent<T>>always(true));
     }
@@ -186,7 +187,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Integer... ids) {
         return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
@@ -195,7 +196,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull List<Integer> ids) {
         return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
@@ -204,7 +205,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate) {
         return TouchObservable.create(adapter, predicate);
@@ -213,7 +214,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate,
                                                                       @NonNull Integer... ids) {
@@ -223,7 +224,7 @@ public class RxFastAdapter {
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate,
                                                                       @NonNull List<Integer> ids) {
@@ -233,7 +234,7 @@ public class RxFastAdapter {
     /**
      * Emits on selection changes
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<SelectionEvent<T>> selections(@NonNull FastAdapter<T> adapter) {
         return SelectionObservable.create(adapter);
     }

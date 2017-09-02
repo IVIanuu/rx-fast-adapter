@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.click;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.view.View;
@@ -51,9 +52,10 @@ public final class ClickObservable<T extends IItem> implements ObservableOnSubsc
     /**
      * Emits on clicks
      */
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                              @NonNull Predicate<ClickEvent<T>> predicate,
-                                                              boolean preClick) {
+                                                                     @NonNull Predicate<ClickEvent<T>> predicate,
+                                                                     boolean preClick) {
         return Observable.create(new ClickObservable<>(adapter, predicate, preClick));
     }
 

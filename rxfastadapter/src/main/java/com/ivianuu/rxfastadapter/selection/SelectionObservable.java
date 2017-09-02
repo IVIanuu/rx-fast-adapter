@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.selection;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
@@ -40,6 +41,7 @@ public class SelectionObservable<T extends IItem> implements ObservableOnSubscri
         this.adapter = adapter;
     }
 
+    @CheckResult @NonNull
     public static <T extends IItem>Observable<SelectionEvent<T>> create(@NonNull FastAdapter<T> adapter) {
         return Observable.create(new SelectionObservable<T>(adapter));
     }

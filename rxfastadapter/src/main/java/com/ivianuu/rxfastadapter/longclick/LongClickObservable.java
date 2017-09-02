@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.longclick;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.view.View;
@@ -51,9 +52,10 @@ public final class LongClickObservable<T extends IItem> implements ObservableOnS
     /**
      * Emits on clicks
      */
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                              @NonNull Predicate<LongClickEvent<T>> predicate,
-                                                              boolean preClick) {
+                                                                         @NonNull Predicate<LongClickEvent<T>> predicate,
+                                                                         boolean preClick) {
         return Observable.create(new LongClickObservable<T>(adapter, predicate, preClick));
     }
 

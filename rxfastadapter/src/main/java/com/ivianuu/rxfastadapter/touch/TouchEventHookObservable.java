@@ -16,6 +16,7 @@
 
 package com.ivianuu.rxfastadapter.touch;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -57,10 +58,10 @@ public class TouchEventHookObservable<T extends IItem> implements ObservableOnSu
     /**
      * Emits on touches
      */
-    @NonNull
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> create(@NonNull FastAdapter<T> adapter,
-                                                                   @NonNull EventHookCallback callback,
-                                                                   @NonNull Predicate<TouchEvent<T>> predicate) {
+                                                                     @NonNull EventHookCallback callback,
+                                                                     @NonNull Predicate<TouchEvent<T>> predicate) {
         return Observable.create(new TouchEventHookObservable<T>(adapter, callback, predicate));
     }
 
