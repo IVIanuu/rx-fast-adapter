@@ -22,7 +22,6 @@ import android.support.annotation.RestrictTo;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
-import com.mikepenz.fastadapter.ISelectionListener;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -48,13 +47,10 @@ public class SelectionObservable<T extends IItem> implements ObservableOnSubscri
 
     @Override
     public void subscribe(final ObservableEmitter<SelectionEvent<T>> e) throws Exception {
-        adapter.withSelectionListener(new ISelectionListener<T>() {
-            @Override
-            public void onSelectionChanged(T item, boolean selected) {
-                if (!e.isDisposed()) {
-                    SelectionEvent<T> selectionEvent = new SelectionEvent<>(item, selected);
-                    e.onNext(selectionEvent);
-                }
+        adapter.withSelectionListener((item, selected) -> {
+            if (!e.isDisposed()) {
+                SelectionEvent<T> selectionEvent = new SelectionEvent<>(item, selected);
+                e.onNext(selectionEvent);
             }
         });
 

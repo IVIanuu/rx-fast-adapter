@@ -19,11 +19,8 @@ package com.ivianuu.rxfastadapter.touch;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItem;
 
 import io.reactivex.Observable;
@@ -55,21 +52,18 @@ public class TouchObservable<T extends IItem> implements ObservableOnSubscribe<T
 
     @Override
     public void subscribe(final ObservableEmitter<TouchEvent<T>> e) throws Exception {
-        adapter.withOnTouchListener(new FastAdapter.OnTouchListener<T>() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event, IAdapter<T> adapter, T item, int position) {
-                if (!e.isDisposed()) {
-                    TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter, item, position);
-                    e.onNext(touchEvent);
-                    try {
-                        return predicate.test(touchEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+        adapter.withOnTouchListener((v, event, adapter, item, position) -> {
+            if (!e.isDisposed()) {
+                TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter, item, position);
+                e.onNext(touchEvent);
+                try {
+                    return predicate.test(touchEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
-
-                return false;
             }
+
+            return false;
         });
 
         e.setDisposable(new Disposable() {

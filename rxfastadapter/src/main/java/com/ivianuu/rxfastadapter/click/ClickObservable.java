@@ -19,10 +19,8 @@ package com.ivianuu.rxfastadapter.click;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.view.View;
 
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.IItem;
 
 import io.reactivex.Observable;
@@ -62,38 +60,32 @@ public final class ClickObservable<T extends IItem> implements ObservableOnSubsc
     @Override
     public void subscribe(final ObservableEmitter<ClickEvent<T>> e) throws Exception {
         if (preClick) {
-            adapter.withOnPreClickListener(new FastAdapter.OnClickListener<T>() {
-                @Override
-                public boolean onClick(View v, IAdapter<T> adapter, T item, int position) {
-                    if (!e.isDisposed()) {
-                        ClickEvent<T> clickEvent = new ClickEvent<T>(v, adapter, item, position);
-                        e.onNext(clickEvent);
-                        try {
-                            return predicate.test(clickEvent);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
+            adapter.withOnPreClickListener((v, adapter, item, position) -> {
+                if (!e.isDisposed()) {
+                    ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
+                    e.onNext(clickEvent);
+                    try {
+                        return predicate.test(clickEvent);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
                     }
-
-                    return false;
                 }
+
+                return false;
             });
         } else {
-            adapter.withOnClickListener(new FastAdapter.OnClickListener<T>() {
-                @Override
-                public boolean onClick(View v, IAdapter<T> adapter, T item, int position) {
-                    if (!e.isDisposed()) {
-                        ClickEvent<T> clickEvent = new ClickEvent<T>(v, adapter, item, position);
-                        e.onNext(clickEvent);
-                        try {
-                            return predicate.test(clickEvent);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
+            adapter.withOnClickListener((v, adapter, item, position) -> {
+                if (!e.isDisposed()) {
+                    ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
+                    e.onNext(clickEvent);
+                    try {
+                        return predicate.test(clickEvent);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
                     }
-
-                    return false;
                 }
+
+                return false;
             });
 
         }

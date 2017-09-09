@@ -36,12 +36,7 @@ public final class Functions {
      */
     @NonNull
     public static <T> Predicate<T> always(final boolean always) {
-        return new Predicate<T>() {
-            @Override
-            public boolean test(T t) throws Exception {
-                return always;
-            }
-        };
+        return t -> always;
     }
 
 }
