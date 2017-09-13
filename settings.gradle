@@ -1,1 +1,1 @@
-include ':sample', ':rxfastadapter'
+include ':sample', ':rxfastadapter', ':rxfastadapter-kotlin'
