@@ -33,12 +33,6 @@ import io.reactivex.functions.Predicate
  * Emits on clicks
  */
 @CheckResult
-fun <T : IItem<*, *>?> FastAdapter<T>.clicks(): Observable<ClickEvent<T>> = RxFastAdapter.clicks(this)
-
-/**
- * Emits on clicks
- */
-@CheckResult
 fun <T : IItem<*, *>?> FastAdapter<T>.clicks(predicate: Predicate<ClickEvent<T>>): Observable<ClickEvent<T>>
         = RxFastAdapter.clicks(this, predicate)
 
@@ -47,8 +41,13 @@ fun <T : IItem<*, *>?> FastAdapter<T>.clicks(predicate: Predicate<ClickEvent<T>>
  * This will use event hooks internally
  */
 @CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.clicks(vararg ids: Int): Observable<ClickEvent<T>>
-        = RxFastAdapter.clicks(this, ids.asList())
+fun <T : IItem<*, *>> FastAdapter<T>.clicks(vararg ids: Int): Observable<ClickEvent<T>> {
+    return if (ids.isEmpty()) {
+        RxFastAdapter.clicks(this)
+    } else {
+        RxFastAdapter.clicks(this, ids.toList())
+    }
+}
 
 /**
  * Emits on clicks
@@ -72,24 +71,16 @@ fun <T : IItem<*, *>> FastAdapter<T>.preClicks(predicate: Predicate<ClickEvent<T
 
 /**
  * Emits on long clicks
- */
-@CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.longClicks(): Observable<LongClickEvent<T>> = RxFastAdapter.longClicks(this)
-
-/**
- * Emits on long clicks
- */
-@CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.longClicks(predicate: Predicate<LongClickEvent<T>>): Observable<LongClickEvent<T>>
-        = RxFastAdapter.longClicks(this, predicate)
-
-/**
- * Emits on long clicks
  * This will use event hooks internally
  */
 @CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.longClicks(vararg ids: Int): Observable<LongClickEvent<T>>
-        = RxFastAdapter.longClicks(this, ids.asList())
+fun <T : IItem<*, *>> FastAdapter<T>.longClicks(vararg ids: Int): Observable<LongClickEvent<T>> {
+    return if (ids.isEmpty()) {
+        RxFastAdapter.longClicks(this)
+    } else{
+        RxFastAdapter.longClicks(this, ids.toList())
+    }
+}
 
 /**
  * Emits on long clicks
@@ -104,15 +95,19 @@ fun <T : IItem<*, *>> FastAdapter<T>.longClicks(ids: List<Int>): Observable<Long
  */
 @CheckResult
 fun <T : IItem<*, *>> FastAdapter<T>.longClicks(predicate: Predicate<LongClickEvent<T>>,
-                                                vararg ids: Int): Observable<LongClickEvent<T>>
-        = RxFastAdapter.longClicks(this, predicate, ids.asList())
+                                                vararg ids: Int): Observable<LongClickEvent<T>> {
+    return if (ids.isEmpty()) {
+        RxFastAdapter.longClicks(this, predicate)
+    } else{
+        RxFastAdapter.longClicks(this, predicate, ids.toList())
+    }
+}
 
 /**
  * Emits on long clicks
  */
 @CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.longClicks(adapter: FastAdapter<T>,
-                                 predicate: Predicate<LongClickEvent<T>>,
+fun <T : IItem<*, *>> FastAdapter<T>.longClicks(predicate: Predicate<LongClickEvent<T>>,
                                  ids: List<Int>): Observable<LongClickEvent<T>>
         = RxFastAdapter.longClicks(this, predicate, ids)
 
@@ -138,14 +133,13 @@ fun <T : IItem<*, *>> preLongClicks(adapter: FastAdapter<T>,
  * Emits on touches
  */
 @CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.touches(): Observable<TouchEvent<T>> = RxFastAdapter.touches(this)
-
-/**
- * Emits on touches
- */
-@CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.touches(vararg ids: Int): Observable<TouchEvent<T>>
-        = RxFastAdapter.touches(this, ids.asList())
+fun <T : IItem<*, *>> FastAdapter<T>.touches(vararg ids: Int): Observable<TouchEvent<T>> {
+    return if (ids.isEmpty()) {
+        RxFastAdapter.touches(this)
+    } else{
+        RxFastAdapter.touches(this, ids.toList())
+    }
+}
 
 /**
  * Emits on touches
@@ -158,15 +152,13 @@ fun <T : IItem<*, *>> FastAdapter<T>.touches(ids: List<Int>): Observable<TouchEv
  * Emits on touches
  */
 @CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.touches(predicate: Predicate<TouchEvent<T>>): Observable<TouchEvent<T>>
-        = RxFastAdapter.touches(this, predicate)
-
-/**
- * Emits on touches
- */
-@CheckResult
-fun <T : IItem<*, *>> FastAdapter<T>.touches(predicate: Predicate<TouchEvent<T>>, vararg ids: Int): Observable<TouchEvent<T>>
-        = RxFastAdapter.touches(this, predicate, ids.asList())
+fun <T : IItem<*, *>> FastAdapter<T>.touches(predicate: Predicate<TouchEvent<T>>, vararg ids: Int): Observable<TouchEvent<T>> {
+    return if (ids.isEmpty()) {
+        RxFastAdapter.touches(this, predicate)
+    } else {
+        RxFastAdapter.touches(this, predicate, ids.toList())
+    }
+}
 
 /**
  * Emits on touches
