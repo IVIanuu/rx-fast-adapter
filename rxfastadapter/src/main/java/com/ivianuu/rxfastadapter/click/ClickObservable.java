@@ -26,7 +26,6 @@ import com.mikepenz.fastadapter.IItem;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
@@ -90,23 +89,11 @@ public final class ClickObservable<T extends IItem> implements ObservableOnSubsc
 
         }
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                    if (preClick) {
-                        adapter.withOnPreClickListener(null);
-                    } else {
-                        adapter.withOnClickListener(null);
-                    }
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return disposed;
+        e.setCancellable(() -> {
+            if (preClick) {
+                adapter.withOnPreClickListener(null);
+            } else {
+                adapter.withOnClickListener(null);
             }
         });
     }

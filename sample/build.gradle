@@ -1,24 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.ivianuu.rxfastadapter.sample"
-        minSdkVersion 14
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-    }
-    // fix android support
-    configurations.all {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'com.android.support') {
-                if (!details.requested.name.startsWith("multidex")) {
-                    details.useVersion '26.0.1'
-                }
-            }
-        }
     }
 
     compileOptions {
@@ -28,10 +18,10 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:26.0.2'
+    implementation rootProject.ext.supportAppCompat
 
     // Rx Fast Adapter
     implementation project(':rxfastadapter')
 
-    implementation 'com.mikepenz:fastadapter-commons:2.6.3@aar'
+    implementation rootProject.ext.fastAdapterCommons
 }

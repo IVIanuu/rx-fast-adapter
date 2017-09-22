@@ -26,7 +26,6 @@ import com.mikepenz.fastadapter.IItem;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Selection observable
@@ -54,20 +53,6 @@ public class SelectionObservable<T extends IItem> implements ObservableOnSubscri
             }
         });
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                    adapter.withSelectionListener(null);
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return disposed;
-            }
-        });
+        e.setCancellable(() -> adapter.withSelectionListener(null));
     }
 }

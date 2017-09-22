@@ -34,7 +34,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
@@ -96,19 +95,6 @@ public class TouchEventHookObservable<T extends IItem> implements ObservableOnSu
             }
         });
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return disposed;
-            }
-        });
+        e.setCancellable(() -> {});
     }
 }

@@ -26,7 +26,6 @@ import com.mikepenz.fastadapter.IItem;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
@@ -66,20 +65,6 @@ public class TouchObservable<T extends IItem> implements ObservableOnSubscribe<T
             return false;
         });
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                    adapter.withOnTouchListener(null);
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return disposed;
-            }
-        });
+        e.setCancellable(() -> adapter.withOnTouchListener(null));
     }
 }

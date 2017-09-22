@@ -33,7 +33,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Fast adapter click event hook observable
@@ -83,19 +82,6 @@ public class ClickEventHookObservable<T extends IItem>
             }
         });
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return true;
-            }
-        });
+        e.setCancellable(() -> {});
     }
 }

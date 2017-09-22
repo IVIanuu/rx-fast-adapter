@@ -26,7 +26,6 @@ import com.mikepenz.fastadapter.IItem;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 
 /**
@@ -89,23 +88,11 @@ public final class LongClickObservable<T extends IItem> implements ObservableOnS
             });
         }
 
-        e.setDisposable(new Disposable() {
-            private boolean disposed;
-            @Override
-            public void dispose() {
-                if (!disposed) {
-                    disposed = true;
-                    if (preClick) {
-                        adapter.withOnPreLongClickListener(null);
-                    } else {
-                        adapter.withOnLongClickListener(null);
-                    }
-                }
-            }
-
-            @Override
-            public boolean isDisposed() {
-                return disposed;
+        e.setCancellable(() -> {
+            if (preClick)  {
+                adapter.withOnPreLongClickListener(null);
+            } else {
+                adapter.withOnLongClickListener(null);
             }
         });
     }
