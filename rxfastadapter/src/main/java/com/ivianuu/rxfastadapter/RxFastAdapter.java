@@ -39,6 +39,8 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.functions.Predicate;
 
+import static com.ivianuu.preconditions.Preconditions.checkNotNull;
+
 /**
  * Rx Fast adapter
  */
@@ -62,6 +64,8 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Predicate<ClickEvent<T>> predicate) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
         return ClickObservable.create(adapter, predicate, false);
     }
 
@@ -72,6 +76,8 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull Integer... ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(ids, "ids == null");
         return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
     }
 
@@ -82,6 +88,8 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter,
                                                                      @NonNull List<Integer> ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(ids, "ids == null");
         return ClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids));
     }
 
@@ -99,6 +107,8 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> preClicks(@NonNull FastAdapter<T> adapter,
                                                                         @NonNull Predicate<ClickEvent<T>> predicate) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
         return ClickObservable.create(adapter, predicate, true);
     }
 
@@ -116,6 +126,8 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Predicate<LongClickEvent<T>> predicate) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
         return LongClickObservable.create(adapter, predicate, false);
     }
 
@@ -146,6 +158,9 @@ public class RxFastAdapter {
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Predicate<LongClickEvent<T>> predicate,
                                                                              @NonNull Integer... ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
+        checkNotNull(ids, "ids == null");
         return LongClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
     }
 
@@ -156,6 +171,9 @@ public class RxFastAdapter {
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Predicate<LongClickEvent<T>> predicate,
                                                                              @NonNull List<Integer> ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
+        checkNotNull(ids, "ids == null");
         return LongClickEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
     }
 
@@ -173,15 +191,9 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> preLongClicks(@NonNull FastAdapter<T> adapter,
                                                                                 @NonNull Predicate<LongClickEvent<T>> predicate) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
         return LongClickObservable.create(adapter, predicate, true);
-    }
-
-    /**
-     * Emits on touches
-     */
-    @CheckResult @NonNull
-    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
-        return touches(adapter, Functions.<TouchEvent<T>>always(true));
     }
 
     /**
@@ -206,8 +218,19 @@ public class RxFastAdapter {
      * Emits on touches
      */
     @CheckResult @NonNull
+    public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
+        checkNotNull(adapter, "adapter == null");
+        return touches(adapter, Functions.<TouchEvent<T>>always(true));
+    }
+
+    /**
+     * Emits on touches
+     */
+    @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
         return TouchObservable.create(adapter, predicate);
     }
 
@@ -218,6 +241,9 @@ public class RxFastAdapter {
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate,
                                                                       @NonNull Integer... ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
+        checkNotNull(ids, "ids == null");
         return TouchEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
     }
 
@@ -228,6 +254,9 @@ public class RxFastAdapter {
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Predicate<TouchEvent<T>> predicate,
                                                                       @NonNull List<Integer> ids) {
+        checkNotNull(adapter, "adapter == null");
+        checkNotNull(predicate, "predicate == null");
+        checkNotNull(ids, "ids == null");
         return TouchEventHookObservable.create(adapter, IdEventHookCallback.with(ids), predicate);
     }
 
@@ -236,6 +265,7 @@ public class RxFastAdapter {
      */
     @CheckResult @NonNull
     public static <T extends IItem> Observable<SelectionEvent<T>> selections(@NonNull FastAdapter<T> adapter) {
+        checkNotNull(adapter, "adapter == null");
         return SelectionObservable.create(adapter);
     }
 
