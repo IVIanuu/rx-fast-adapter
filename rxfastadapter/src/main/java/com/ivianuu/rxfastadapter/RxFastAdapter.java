@@ -39,7 +39,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.functions.Predicate;
 
-import static com.ivianuu.preconditions.Preconditions.checkNotNull;
+import static com.ivianuu.rxfastadapter.Preconditions.checkNotNull;
 
 /**
  * Rx Fast adapter
