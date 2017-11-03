@@ -19,6 +19,10 @@ android {
 }
 
 dependencies {
+    // Android support
+    api rootProject.ext.supportAnnotations
+    api rootProject.ext.supportRecyclerView
+
     // Fast adapter
     api(rootProject.ext.fastAdapter) {
         transitive = true
