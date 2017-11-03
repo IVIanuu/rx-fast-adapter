@@ -55,7 +55,7 @@ public class RxFastAdapter {
      */
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> clicks(@NonNull FastAdapter<T> adapter) {
-        return clicks(adapter, Functions.<ClickEvent<T>>always(true));
+        return clicks(adapter, Functions.always(true));
     }
 
     /**
@@ -98,7 +98,7 @@ public class RxFastAdapter {
      */
     @CheckResult @NonNull
     public static <T extends IItem> Observable<ClickEvent<T>> preClicks(@NonNull FastAdapter<T> adapter) {
-        return preClicks(adapter, Functions.<ClickEvent<T>>always(true));
+        return preClicks(adapter, Functions.always(true));
     }
 
     /**
@@ -117,7 +117,7 @@ public class RxFastAdapter {
      */
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter) {
-        return longClicks(adapter, Functions.<LongClickEvent<T>>always(true));
+        return longClicks(adapter, Functions.always(true));
     }
 
     /**
@@ -138,7 +138,7 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull Integer... ids) {
-        return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
+        return longClicks(adapter, Functions.always(true), ids);
     }
 
     /**
@@ -148,7 +148,7 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> longClicks(@NonNull FastAdapter<T> adapter,
                                                                              @NonNull List<Integer> ids) {
-        return longClicks(adapter, Functions.<LongClickEvent<T>>always(true), ids);
+        return longClicks(adapter, Functions.always(true), ids);
     }
 
     /**
@@ -182,7 +182,7 @@ public class RxFastAdapter {
      */
     @CheckResult @NonNull
     public static <T extends IItem> Observable<LongClickEvent<T>> preLongClicks(@NonNull FastAdapter<T> adapter) {
-        return preLongClicks(adapter, Functions.<LongClickEvent<T>>always(true));
+        return preLongClicks(adapter, Functions.always(true));
     }
 
     /**
@@ -202,7 +202,7 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull Integer... ids) {
-        return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
+        return touches(adapter, Functions.always(true), ids);
     }
 
     /**
@@ -211,7 +211,7 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter,
                                                                       @NonNull List<Integer> ids) {
-        return touches(adapter, Functions.<TouchEvent<T>>always(true), ids);
+        return touches(adapter, Functions.always(true), ids);
     }
 
     /**
@@ -220,7 +220,7 @@ public class RxFastAdapter {
     @CheckResult @NonNull
     public static <T extends IItem> Observable<TouchEvent<T>> touches(@NonNull FastAdapter<T> adapter) {
         checkNotNull(adapter, "adapter == null");
-        return touches(adapter, Functions.<TouchEvent<T>>always(true));
+        return touches(adapter, Functions.always(true));
     }
 
     /**
