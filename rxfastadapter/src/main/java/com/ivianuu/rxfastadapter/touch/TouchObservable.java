@@ -52,14 +52,12 @@ public class TouchObservable<T extends IItem> implements ObservableOnSubscribe<T
     @Override
     public void subscribe(final ObservableEmitter<TouchEvent<T>> e) throws Exception {
         adapter.withOnTouchListener((v, event, adapter, item, position) -> {
-            if (!e.isDisposed()) {
-                TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter, item, position);
-                e.onNext(touchEvent);
-                try {
-                    return predicate.test(touchEvent);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+            TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter, item, position);
+            e.onNext(touchEvent);
+            try {
+                return predicate.test(touchEvent);
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
 
             return false;

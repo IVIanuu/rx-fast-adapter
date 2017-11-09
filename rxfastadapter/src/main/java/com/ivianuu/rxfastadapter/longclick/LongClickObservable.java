@@ -60,28 +60,24 @@ public final class LongClickObservable<T extends IItem> implements ObservableOnS
     public void subscribe(final ObservableEmitter<LongClickEvent<T>> e) throws Exception {
         if (preClick) {
             adapter.withOnLongClickListener((v, adapter, item, position) -> {
-                if (!e.isDisposed()) {
-                    LongClickEvent<T> clickEvent = new LongClickEvent<>(v, adapter, item, position);
-                    e.onNext(clickEvent);
-                    try {
-                        return predicate.test(clickEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                LongClickEvent<T> clickEvent = new LongClickEvent<>(v, adapter, item, position);
+                e.onNext(clickEvent);
+                try {
+                    return predicate.test(clickEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;
             });
         } else {
             adapter.withOnLongClickListener((v, adapter, item, position) -> {
-                if (!e.isDisposed()) {
-                    LongClickEvent<T> clickEvent = new LongClickEvent<>(v, adapter, item, position);
-                    e.onNext(clickEvent);
-                    try {
-                        return predicate.test(clickEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                LongClickEvent<T> clickEvent = new LongClickEvent<>(v, adapter, item, position);
+                e.onNext(clickEvent);
+                try {
+                    return predicate.test(clickEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;

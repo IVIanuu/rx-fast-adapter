@@ -69,14 +69,12 @@ public class TouchEventHookObservable<T extends IItem> implements ObservableOnSu
         adapter.withEventHook(new TouchEventHook<T>() {
             @Override
             public boolean onTouch(View v, MotionEvent event, int position, FastAdapter<T> fastAdapter, T item) {
-                if (!e.isDisposed()) {
-                    TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter.getAdapter(position), item, position);
-                    e.onNext(touchEvent);
-                    try {
-                        return predicate.test(touchEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                TouchEvent<T> touchEvent = new TouchEvent<>(v, event, adapter.getAdapter(position), item, position);
+                e.onNext(touchEvent);
+                try {
+                    return predicate.test(touchEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;

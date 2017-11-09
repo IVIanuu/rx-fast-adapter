@@ -47,10 +47,8 @@ public class SelectionObservable<T extends IItem> implements ObservableOnSubscri
     @Override
     public void subscribe(final ObservableEmitter<SelectionEvent<T>> e) throws Exception {
         adapter.withSelectionListener((item, selected) -> {
-            if (!e.isDisposed()) {
-                SelectionEvent<T> selectionEvent = new SelectionEvent<>(item, selected);
-                e.onNext(selectionEvent);
-            }
+            SelectionEvent<T> selectionEvent = new SelectionEvent<>(item, selected);
+            e.onNext(selectionEvent);
         });
 
         e.setCancellable(() -> adapter.withSelectionListener(null));

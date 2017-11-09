@@ -60,28 +60,24 @@ public final class ClickObservable<T extends IItem> implements ObservableOnSubsc
     public void subscribe(final ObservableEmitter<ClickEvent<T>> e) throws Exception {
         if (preClick) {
             adapter.withOnPreClickListener((v, adapter, item, position) -> {
-                if (!e.isDisposed()) {
-                    ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
-                    e.onNext(clickEvent);
-                    try {
-                        return predicate.test(clickEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
+                e.onNext(clickEvent);
+                try {
+                    return predicate.test(clickEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;
             });
         } else {
             adapter.withOnClickListener((v, adapter, item, position) -> {
-                if (!e.isDisposed()) {
-                    ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
-                    e.onNext(clickEvent);
-                    try {
-                        return predicate.test(clickEvent);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                ClickEvent<T> clickEvent = new ClickEvent<>(v, adapter, item, position);
+                e.onNext(clickEvent);
+                try {
+                    return predicate.test(clickEvent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;

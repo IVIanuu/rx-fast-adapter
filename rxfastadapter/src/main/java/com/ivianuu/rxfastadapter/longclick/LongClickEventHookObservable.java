@@ -69,14 +69,12 @@ public class LongClickEventHookObservable<T extends IItem>
         adapter.withEventHook(new LongClickEventHook<T>() {
             @Override
             public boolean onLongClick(View v, int position, FastAdapter<T> fastAdapter, T item) {
-                if (!e.isDisposed()) {
-                    LongClickEvent<T> event = new LongClickEvent<>(v, adapter.getAdapter(position), item, position);
-                    e.onNext(event);
-                    try {
-                        return predicate.test(event);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+                LongClickEvent<T> event = new LongClickEvent<>(v, adapter.getAdapter(position), item, position);
+                e.onNext(event);
+                try {
+                    return predicate.test(event);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
 
                 return false;

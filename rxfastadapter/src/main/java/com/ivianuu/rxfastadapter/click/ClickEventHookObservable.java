@@ -63,10 +63,8 @@ public class ClickEventHookObservable<T extends IItem>
         adapter.withEventHook(new ClickEventHook<T>() {
             @Override
             public void onClick(View v, int position, FastAdapter<T> fastAdapter, T item) {
-                if (!e.isDisposed()) {
-                    ClickEvent<T> clickEventHookEvent = new ClickEvent<>(v, adapter.getAdapter(position), item, position);
-                    e.onNext(clickEventHookEvent);
-                }
+                ClickEvent<T> clickEventHookEvent = new ClickEvent<>(v, adapter.getAdapter(position), item, position);
+                e.onNext(clickEventHookEvent);
             }
 
             @Nullable
